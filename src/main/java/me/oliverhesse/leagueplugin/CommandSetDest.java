@@ -21,17 +21,18 @@ public class CommandSetDest implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if(sender instanceof Player player){
             Plugin plugin = sender.getServer().getPluginManager().getPlugin("LeaguePlugin");
-            Skeleton skeleton = new Skeleton(EntityType.SKELETON, ((CraftWorld) player.getWorld()).getHandle());
+            RangeMinion newTower = new RangeMinion(EntityType.SKELETON, ((CraftWorld) player.getWorld()).getHandle());
+
 
             // Set position
-            skeleton.setPosRaw(player.getX(),player.getY(), player.getZ());
+            newTower.setPosRaw(player.getX(),player.getY(), player.getZ());
 
             // Disable AI
-            skeleton.setNoAi(true);
+            //skeleton.setNoAi(true);
 
-            ((CraftWorld) player.getWorld()).getHandle().addFreshEntity(skeleton, CreatureSpawnEvent.SpawnReason.COMMAND);
+            ((CraftWorld) player.getWorld()).getHandle().addFreshEntity(newTower, CreatureSpawnEvent.SpawnReason.COMMAND);
 
-            this.main.TempEnd =  skeleton;
+            this.main.TempEnd =  newTower;
         }
         return false;
     }

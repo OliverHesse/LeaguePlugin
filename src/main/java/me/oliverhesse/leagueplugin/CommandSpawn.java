@@ -30,7 +30,6 @@ public class CommandSpawn implements CommandExecutor {
             Plugin plugin = sender.getServer().getPluginManager().getPlugin("LeaguePlugin");
             Location newLocation = this.main.TempStart;
 
-
             MeleeMinion customZombie = new MeleeMinion(net.minecraft.world.entity.EntityType.ZOMBIE, ((CraftWorld) player.getWorld()).getHandle(),newLocation,this.main.TempEnd);
             customZombie.setCurrentTarget(this.main.TempEnd);
             customZombie.target = this.main.TempEnd;

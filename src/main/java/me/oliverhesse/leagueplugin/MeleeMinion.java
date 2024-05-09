@@ -8,10 +8,15 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.ZombieAttackGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.persistence.PersistentDataType;
@@ -26,9 +31,13 @@ public class MeleeMinion extends Zombie {
 
     public LivingEntity target;
     public MeleeMinion(EntityType<? extends Zombie> type, Level world, Location loc,LivingEntity endPoint) {
+
         super(type, world);
         this.setPosRaw(loc.getX(),loc.getY(),loc.getZ());
-
+        Bukkit.getServer().getLogger().info("should be called");
+        Bukkit.getServer().getLogger().info(endPoint.toString());
+        this.target = endPoint;
+        Bukkit.getServer().getLogger().info(this.target.toString());
 
     }
     public void setCurrentTarget(LivingEntity endPoint){
@@ -43,8 +52,11 @@ public class MeleeMinion extends Zombie {
     }
     @Override
     protected void registerGoals() {
-
-        this.goalSelector.addGoal(1,new AttackCurrentTowerGoal<>(this,this.target));
+        //this.targetSelector.addGoal();
+        this.goalSelector.addGoal(2, new ZombieAttackGoal(this, 1.0D, false));
+        this.targetSelector.addGoal(2,new NearestAttackableTargetGoal<>(this, Skeleton.class, true));
+        //this.goalSelector.addGoal(2,new NearestAttackableTargetGoal<>(this, Player.class, true));
+        this.goalSelector.addGoal(3,new AttackCurrentTowerGoal<>(this,this.target));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
 
