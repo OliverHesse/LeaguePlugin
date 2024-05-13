@@ -23,7 +23,7 @@ public class CommandSetDest implements CommandExecutor {
             Plugin plugin = sender.getServer().getPluginManager().getPlugin("LeaguePlugin");
             RangeMinion newTower = new RangeMinion(EntityType.SKELETON, ((CraftWorld) player.getWorld()).getHandle());
 
-
+            plugin.getServer().getLogger().info(player.getWorld().getName());
             // Set position
             newTower.setPosRaw(player.getX(),player.getY(), player.getZ());
 

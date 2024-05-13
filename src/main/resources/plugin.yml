@@ -14,3 +14,6 @@ commands:
   setSpawn:
     description: spawns a custom mob
     usage: /setSpawn
+  spawnTower:
+    description: spawn a tower
+    usage: /spawntower

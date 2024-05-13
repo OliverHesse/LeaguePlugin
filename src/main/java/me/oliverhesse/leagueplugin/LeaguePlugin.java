@@ -16,6 +16,7 @@ public final class LeaguePlugin extends JavaPlugin {
 
         getCommand("setDest").setExecutor(new CommandSetDest(this));
         getCommand("setSpawn").setExecutor(new CommandSetSpawn(this));
+        getCommand("spawnTower").setExecutor(new CommandSpawnTower(this));
 
 
     }
