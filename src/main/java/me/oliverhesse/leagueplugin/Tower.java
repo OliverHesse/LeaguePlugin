@@ -3,17 +3,14 @@ package me.oliverhesse.leagueplugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.data.BlockData;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.Bisected;
 import org.bukkit.block.data.type.Stairs;
 import org.bukkit.entity.BlockDisplay;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Shulker;
 import org.bukkit.entity.Slime;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.metadata.MetadataValueAdapter;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.util.Transformation;
 
 
 import java.util.List;
@@ -29,56 +26,152 @@ public class Tower {
         this.towerLocation = location;
         this.towerLocation.setPitch(0f);
         this.towerLocation.setYaw(0f);
-        this.towerLocation.setX(Math.floor(this.towerLocation.getX()));
+        this.towerLocation.setX(Math.floor(this.towerLocation.getX())+3f);
         this.towerLocation.setY(Math.floor(this.towerLocation.getY()));
         this.towerLocation.setZ(Math.floor(this.towerLocation.getZ()));
 
     }
     public void build(){
+
+        //north is -z south +z west -x east +x
         //this code constructs me a tower
+        Location blockLocation = this.towerLocation.clone();
+        Location shulkerLocation = this.towerLocation.clone();
+        shulkerLocation.setX(shulkerLocation.getX()+0.5f);
+        shulkerLocation.setZ(shulkerLocation.getZ()+0.5f);
 
-        //temporarily store a slime block and display block over each-other. make slime slightly bigger
-        Location shulkerLocations = this.towerLocation.clone();
-        shulkerLocations.setZ(shulkerLocations.getZ()+0.5f);
-        shulkerLocations.setX(shulkerLocations.getX()+0.5f);
 
-        Shulker newShulker = (Shulker) shulkerLocations.getWorld().spawnEntity(shulkerLocations, EntityType.SHULKER);
+        //create stairs for base
+        placeSlime(shulkerLocation,0,0,-2);
+        addStair(blockLocation,0,0,-2,Stairs.Shape.STRAIGHT,BlockFace.SOUTH, Bisected.Half.BOTTOM);
+
+        placeSlime(shulkerLocation,0,0,4);
+        addStair(blockLocation,0,0,4,Stairs.Shape.STRAIGHT,BlockFace.NORTH, Bisected.Half.BOTTOM);
+
+        placeSlime(shulkerLocation,2,0,-2);
+        addStair(blockLocation,2,0,-2,Stairs.Shape.STRAIGHT,BlockFace.WEST, Bisected.Half.BOTTOM);
+
+        placeSlime(shulkerLocation,-4,0,0);
+        addStair(blockLocation,-4,0,0,Stairs.Shape.STRAIGHT,BlockFace.EAST, Bisected.Half.BOTTOM);
+
+        //reset location
+        shulkerLocation.setX(shulkerLocation.getX()+2);
+        blockLocation.setX(blockLocation.getX()+2);
+
+        //create interlocking sections
+        placeSlime(shulkerLocation,1,0,1);
+        addStair(blockLocation,1,0,1,Stairs.Shape.INNER_RIGHT,BlockFace.WEST, Bisected.Half.BOTTOM);
+        placeSlime(shulkerLocation,0,0,1);
+        addStair(blockLocation,0,0,1,Stairs.Shape.OUTER_RIGHT,BlockFace.WEST, Bisected.Half.BOTTOM);
+        placeSlime(shulkerLocation,1,0,-1);
+        addStair(blockLocation,1,0,-1,Stairs.Shape.OUTER_RIGHT,BlockFace.WEST, Bisected.Half.BOTTOM);
+
+        placeSlime(shulkerLocation,-3,0,-2);
+        addStair(blockLocation,-3,0,-2,Stairs.Shape.INNER_RIGHT,BlockFace.EAST, Bisected.Half.BOTTOM);
+        placeSlime(shulkerLocation,-1,0,0);
+        addStair(blockLocation,-1,0,0,Stairs.Shape.OUTER_RIGHT,BlockFace.EAST, Bisected.Half.BOTTOM);
+        placeSlime(shulkerLocation,1,0,-1);
+        addStair(blockLocation,1,0,-1,Stairs.Shape.OUTER_RIGHT,BlockFace.EAST, Bisected.Half.BOTTOM);
+
+
+        placeSlime(shulkerLocation,2,0,1);
+        addStair(blockLocation,2,0,1,Stairs.Shape.INNER_RIGHT,BlockFace.SOUTH, Bisected.Half.BOTTOM);
+        placeSlime(shulkerLocation,1,0,0);
+        addStair(blockLocation,1,0,0,Stairs.Shape.OUTER_RIGHT,BlockFace.SOUTH, Bisected.Half.BOTTOM);
+        placeSlime(shulkerLocation,-1,0,-1);
+        addStair(blockLocation,-1,0,-1,Stairs.Shape.OUTER_RIGHT,BlockFace.SOUTH, Bisected.Half.BOTTOM);
+
+
+        placeSlime(shulkerLocation,-2,0,3);
+        addStair(blockLocation,-2,0,3,Stairs.Shape.INNER_RIGHT,BlockFace.NORTH, Bisected.Half.BOTTOM);
+        placeSlime(shulkerLocation,-1,0,0);
+        addStair(blockLocation,-1,0,0,Stairs.Shape.OUTER_RIGHT,BlockFace.NORTH, Bisected.Half.BOTTOM);
+        placeSlime(shulkerLocation,1,0,1);
+        addStair(blockLocation,1,0,1,Stairs.Shape.OUTER_RIGHT,BlockFace.NORTH, Bisected.Half.BOTTOM);
+
+        //reset location
+        shulkerLocation.setX(shulkerLocation.getX()+1);
+        blockLocation.setX(blockLocation.getX()+1);
+        shulkerLocation.setZ(shulkerLocation.getZ()-2);
+        blockLocation.setZ(blockLocation.getZ()-2);
+
+        //place body layers
+        for(int i = 0;i<9;i++){
+            //todo add fences
+            this.plugin.getLogger().info("for loop run");
+            //create the base of the tower
+            placeShulker(shulkerLocation,0,i,0);
+            addBlock(blockLocation,0,i,0,Material.STONE_BRICKS);
+            this.plugin.getLogger().info(shulkerLocation.toString());
+
+            //add one block around it
+            placeShulker(shulkerLocation,1,0,0);
+            addBlock(blockLocation,1,0,0,Material.STONE_BRICKS);
+
+            placeShulker(shulkerLocation,-2,0,0);
+            addBlock(blockLocation,-2,0,0,Material.STONE_BRICKS);
+
+            placeShulker(shulkerLocation,1,0,1);
+            addBlock(blockLocation,1,0,1,Material.STONE_BRICKS);
+
+            placeShulker(shulkerLocation,0,0,-2);
+            addBlock(blockLocation,0,0,-2,Material.STONE_BRICKS);
+            //reset location
+            shulkerLocation.setZ(shulkerLocation.getZ()+1);
+            blockLocation.setZ(blockLocation.getZ()+1);
+            shulkerLocation.setY(shulkerLocation.getY()-i);
+            blockLocation.setY(blockLocation.getY()-i);
+
+        }
+
+    }
+    public static void placeShulker(Location location,float XChange,float YChange,float ZChange){
+        location.setZ(location.getZ()+ZChange);
+        location.setX(location.getX()+XChange);
+        location.setY(location.getY()+YChange);
+
+        Shulker newShulker = (Shulker) location.getWorld().spawnEntity(location, EntityType.SHULKER);
 
         newShulker.setAI(false);
         newShulker.setCollidable(true);
         newShulker.setInvisible(true);
-        BlockDisplay newBlock = towerLocation.getWorld().spawn(towerLocation,BlockDisplay.class);
-        newBlock.setBlock(Bukkit.createBlockData(Material.STONE_BRICKS));
+    }
+    public static void addBlock(Location location,float XChange,float YChange,float ZChange,Material type){
+        location.setZ(location.getZ()+ZChange);
+        location.setX(location.getX()+XChange);
+        location.setY(location.getY()+YChange);
+        BlockDisplay newBlock = location.getWorld().spawn(location,BlockDisplay.class);
+        newBlock.setBlock(Bukkit.createBlockData(type));
+
+    }
+    public static void placeSlime(Location location,float XChange,float YChange,float ZChange){
+        location.setZ(location.getZ()+ZChange);
+        location.setX(location.getX()+XChange);
+        location.setY(location.getY()+YChange);
+
+        Slime newSlime = (Slime) location.getWorld().spawnEntity(location, EntityType.SLIME);
+
+        newSlime.setAI(false);
+        newSlime.setCollidable(true);
+        newSlime.setInvisible(true);
+        newSlime.setSize(2);
 
 
-        Location stairLocation = this.towerLocation.clone();
-        stairLocation.setX(stairLocation.getX()+1f);
+    }
+    public static void addStair(Location location, float XChange, float YChange, float ZChange, Stairs.Shape shape, BlockFace direction, Bisected.Half half){
+        //stairs are slimes cus fuck this game and their damn shulker display logic
+        location.setZ(location.getZ()+ZChange);
+        location.setX(location.getX()+XChange);
+        location.setY(location.getY()+YChange);
 
-        BlockDisplay newStair1 = stairLocation.getWorld().spawn(stairLocation,BlockDisplay.class);
-        newStair1.setBlock(Bukkit.createBlockData(Material.STONE_BRICK_STAIRS));
-
-        stairLocation.setX(stairLocation.getX()+1f);
-
-        BlockDisplay newStair2 = stairLocation.getWorld().spawn(stairLocation,BlockDisplay.class);
-        newStair2.setBlock(Bukkit.createBlockData(Material.STONE_BRICK_STAIRS));
-
-        //stairLocation.setZ(stairLocation.getZ()-1f);
-        stairLocation.setYaw(180f);
-
-        BlockDisplay newStair3 = stairLocation.getWorld().spawn(stairLocation,BlockDisplay.class);
+        BlockDisplay newStair3 = location.getWorld().spawn(location,BlockDisplay.class);
         Stairs newStairs = (Stairs) Material.STONE_BRICK_STAIRS.createBlockData();
-        newStairs.setShape(Stairs.Shape.INNER_LEFT);
+        newStairs.setShape(shape);
+        newStairs.setFacing(direction);
+        newStairs.setHalf(half);
         newStair3.setBlock(newStairs);
 
-        stairLocation.setX(stairLocation.getX()+1f);
-
-
-        BlockDisplay newStair4 = stairLocation.getWorld().spawn(stairLocation,BlockDisplay.class);
-        newStair4.setBlock(Bukkit.createBlockData(Material.STONE_BRICK_STAIRS));
-        plugin.getServer().getLogger().info(newBlock.getLocation().toString());
-        plugin.getServer().getLogger().info(newStair1.getLocation().toString());
-        plugin.getServer().getLogger().info(newStair2.getLocation().toString());
-        plugin.getServer().getLogger().info(newStair3.getLocation().toString());
-        plugin.getServer().getLogger().info(newStair4.getLocation().toString());
     }
+
+
 }
