@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Bisected;
 import org.bukkit.block.data.type.Stairs;
+import org.bukkit.block.data.type.Wall;
 import org.bukkit.entity.BlockDisplay;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Shulker;
@@ -95,14 +96,15 @@ public class Tower {
         shulkerLocation.setZ(shulkerLocation.getZ()-2);
         blockLocation.setZ(blockLocation.getZ()-2);
 
+
+
         //place body layers
-        for(int i = 0;i<9;i++){
-            //todo add fences
-            this.plugin.getLogger().info("for loop run");
+        for(int i = 0;i<7;i++){
+
             //create the base of the tower
             placeShulker(shulkerLocation,0,i,0);
             addBlock(blockLocation,0,i,0,Material.STONE_BRICKS);
-            this.plugin.getLogger().info(shulkerLocation.toString());
+
 
             //add one block around it
             placeShulker(shulkerLocation,1,0,0);
@@ -123,6 +125,43 @@ public class Tower {
             blockLocation.setY(blockLocation.getY()-i);
 
         }
+        for(int i=1;i<7;i++){
+            placeShulker(shulkerLocation,1,i,1);
+            addWall(blockLocation,1,i,1, new BlockFace[]{BlockFace.NORTH, BlockFace.WEST});
+
+            placeShulker(shulkerLocation,-2,0,-2);
+            addWall(blockLocation,-2,0,-2, new BlockFace[]{BlockFace.SOUTH, BlockFace.EAST});
+
+            placeShulker(shulkerLocation,0,0,2);
+            addWall(blockLocation,0,0,2 ,new BlockFace[]{BlockFace.NORTH, BlockFace.EAST});
+
+            placeShulker(shulkerLocation,2,0,-2);
+            addWall(blockLocation,2,0,-2,new BlockFace[]{BlockFace.SOUTH, BlockFace.WEST});
+
+
+            shulkerLocation.setZ(shulkerLocation.getZ()+1);
+            blockLocation.setZ(blockLocation.getZ()+1);
+            shulkerLocation.setX(shulkerLocation.getX()-1);
+            blockLocation.setX(blockLocation.getX()-1);
+            shulkerLocation.setY(shulkerLocation.getY()-i);
+            blockLocation.setY(blockLocation.getY()-i);
+        }
+        shulkerLocation.setY(shulkerLocation.getY()+7);
+        blockLocation.setY(blockLocation.getY()+7);
+        for(int x =-2;x<3;x++){
+            for(int z=-2;z<3;z++){
+                placeShulker(shulkerLocation,x,0,z);
+                addBlock(blockLocation,x,0,z,Material.STONE_BRICKS);
+
+                shulkerLocation.setZ(shulkerLocation.getZ()-z);
+                blockLocation.setZ(blockLocation.getZ()-z);
+
+                shulkerLocation.setX(shulkerLocation.getX()-x);
+                blockLocation.setX(blockLocation.getX()-x);
+            }
+        }
+
+
 
     }
     public static void placeShulker(Location location,float XChange,float YChange,float ZChange){
@@ -143,6 +182,17 @@ public class Tower {
         BlockDisplay newBlock = location.getWorld().spawn(location,BlockDisplay.class);
         newBlock.setBlock(Bukkit.createBlockData(type));
 
+    }
+    public static void addWall(Location location,float XChange,float YChange,float ZChange,BlockFace[] direction){
+        location.setZ(location.getZ()+ZChange);
+        location.setX(location.getX()+XChange);
+        location.setY(location.getY()+YChange);
+        BlockDisplay newBlock = location.getWorld().spawn(location,BlockDisplay.class);
+
+        Wall wallMeta = (Wall) Bukkit.createBlockData(Material.STONE_BRICK_WALL);
+        wallMeta.setHeight(direction[0],Wall.Height.TALL);
+        wallMeta.setHeight(direction[1],Wall.Height.TALL);
+        newBlock.setBlock(wallMeta);
     }
     public static void placeSlime(Location location,float XChange,float YChange,float ZChange){
         location.setZ(location.getZ()+ZChange);
