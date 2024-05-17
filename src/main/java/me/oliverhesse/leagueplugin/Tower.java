@@ -125,7 +125,7 @@ public class Tower {
             blockLocation.setY(blockLocation.getY()-i);
 
         }
-        for(int i=1;i<7;i++){
+        for(int i=1;i<6;i++){
             placeShulker(shulkerLocation,1,i,1);
             addWall(blockLocation,1,i,1, new BlockFace[]{BlockFace.NORTH, BlockFace.WEST});
 
@@ -160,6 +160,158 @@ public class Tower {
                 blockLocation.setX(blockLocation.getX()-x);
             }
         }
+
+        //create stairs for top
+        placeSlime(shulkerLocation,0,-1,-2);
+        addStair(blockLocation,0,-1,-2,Stairs.Shape.STRAIGHT,BlockFace.SOUTH, Bisected.Half.TOP);
+
+        placeSlime(shulkerLocation,0,0,4);
+        addStair(blockLocation,0,0,4,Stairs.Shape.STRAIGHT,BlockFace.NORTH, Bisected.Half.TOP);
+
+        placeSlime(shulkerLocation,2,0,-2);
+        addStair(blockLocation,2,0,-2,Stairs.Shape.STRAIGHT,BlockFace.WEST, Bisected.Half.TOP);
+
+        placeSlime(shulkerLocation,-4,0,0);
+        addStair(blockLocation,-4,0,0,Stairs.Shape.STRAIGHT,BlockFace.EAST, Bisected.Half.TOP);
+
+        //reset location
+        shulkerLocation.setX(shulkerLocation.getX()+2);
+        blockLocation.setX(blockLocation.getX()+2);
+
+        //create interlocking sections
+        placeSlime(shulkerLocation,1,0,1);
+        addStair(blockLocation,1,0,1,Stairs.Shape.INNER_RIGHT,BlockFace.WEST, Bisected.Half.TOP);
+        placeSlime(shulkerLocation,0,0,1);
+        addStair(blockLocation,0,0,1,Stairs.Shape.OUTER_RIGHT,BlockFace.WEST, Bisected.Half.TOP);
+        placeSlime(shulkerLocation,1,0,-1);
+        addStair(blockLocation,1,0,-1,Stairs.Shape.OUTER_RIGHT,BlockFace.WEST, Bisected.Half.TOP);
+
+        placeSlime(shulkerLocation,-3,0,-2);
+        addStair(blockLocation,-3,0,-2,Stairs.Shape.INNER_RIGHT,BlockFace.EAST, Bisected.Half.TOP);
+        placeSlime(shulkerLocation,-1,0,0);
+        addStair(blockLocation,-1,0,0,Stairs.Shape.OUTER_RIGHT,BlockFace.EAST, Bisected.Half.TOP);
+        placeSlime(shulkerLocation,1,0,-1);
+        addStair(blockLocation,1,0,-1,Stairs.Shape.OUTER_RIGHT,BlockFace.EAST, Bisected.Half.TOP);
+
+
+        placeSlime(shulkerLocation,2,0,1);
+        addStair(blockLocation,2,0,1,Stairs.Shape.INNER_RIGHT,BlockFace.SOUTH, Bisected.Half.TOP);
+        placeSlime(shulkerLocation,1,0,0);
+        addStair(blockLocation,1,0,0,Stairs.Shape.OUTER_RIGHT,BlockFace.SOUTH, Bisected.Half.TOP);
+        placeSlime(shulkerLocation,-1,0,-1);
+        addStair(blockLocation,-1,0,-1,Stairs.Shape.OUTER_RIGHT,BlockFace.SOUTH, Bisected.Half.TOP);
+
+
+        placeSlime(shulkerLocation,-2,0,3);
+        addStair(blockLocation,-2,0,3,Stairs.Shape.INNER_RIGHT,BlockFace.NORTH, Bisected.Half.TOP);
+        placeSlime(shulkerLocation,-1,0,0);
+        addStair(blockLocation,-1,0,0,Stairs.Shape.OUTER_RIGHT,BlockFace.NORTH, Bisected.Half.TOP);
+        placeSlime(shulkerLocation,1,0,1);
+        addStair(blockLocation,1,0,1,Stairs.Shape.OUTER_RIGHT,BlockFace.NORTH, Bisected.Half.TOP);
+
+        //reset location
+        shulkerLocation.setX(shulkerLocation.getX()+1);
+        blockLocation.setX(blockLocation.getX()+1);
+        shulkerLocation.setZ(shulkerLocation.getZ()-2);
+        blockLocation.setZ(blockLocation.getZ()-2);
+        shulkerLocation.setY(shulkerLocation.getY()+2);
+        blockLocation.setY(blockLocation.getY()+2);
+
+        //build top piece
+        placeShulker(shulkerLocation,0,0,0);
+        addBlock(blockLocation,0,0,0,Material.STONE_BRICKS);
+
+        placeSlime(shulkerLocation,0,1,0);
+        addBlock(blockLocation,0,1,0,Material.STONE_BRICK_SLAB);
+
+        placeSlime(shulkerLocation,2,-1,0);
+        addBlock(blockLocation,2,-1,0,Material.STONE_BRICK_SLAB);
+
+        placeSlime(shulkerLocation,-4,0,0);
+        addBlock(blockLocation,-4,0,0,Material.STONE_BRICK_SLAB);
+
+        placeSlime(shulkerLocation,2,0,2);
+        addBlock(blockLocation,2,0,2,Material.STONE_BRICK_SLAB);
+
+        placeSlime(shulkerLocation,0,0,-4);
+        addBlock(blockLocation,0,0,-4,Material.STONE_BRICK_SLAB);
+
+        //reset position
+        shulkerLocation.setZ(shulkerLocation.getZ()+2);
+        blockLocation.setZ(blockLocation.getZ()+2);
+
+        //place stairs
+        placeSlime(shulkerLocation,2,0,-2);
+        addStair(blockLocation,2,0,-2,Stairs.Shape.INNER_RIGHT,BlockFace.NORTH, Bisected.Half.BOTTOM);
+
+        placeSlime(shulkerLocation,0,0,1);
+        addStair(blockLocation,0,0,1,Stairs.Shape.STRAIGHT,BlockFace.EAST, Bisected.Half.BOTTOM);
+
+        placeSlime(shulkerLocation,-1,0,-1);
+        addStair(blockLocation,-1,0,-1,Stairs.Shape.STRAIGHT,BlockFace.NORTH, Bisected.Half.BOTTOM);
+        //reset position
+        shulkerLocation.setZ(shulkerLocation.getZ()+2);
+        blockLocation.setZ(blockLocation.getZ()+2);
+        shulkerLocation.setX(shulkerLocation.getX()-1);
+        blockLocation.setX(blockLocation.getX()-1);
+
+        placeSlime(shulkerLocation,2,0,2);
+        addStair(blockLocation,2,0,2,Stairs.Shape.INNER_RIGHT,BlockFace.EAST, Bisected.Half.BOTTOM);
+
+        placeSlime(shulkerLocation,0,0,-1);
+        addStair(blockLocation,0,0,-1,Stairs.Shape.STRAIGHT,BlockFace.EAST, Bisected.Half.BOTTOM);
+
+        placeSlime(shulkerLocation,-1,0,1);
+        addStair(blockLocation,-1,0,1,Stairs.Shape.STRAIGHT,BlockFace.SOUTH, Bisected.Half.BOTTOM);
+
+        //reset position
+        shulkerLocation.setZ(shulkerLocation.getZ()-2);
+        blockLocation.setZ(blockLocation.getZ()-2);
+        shulkerLocation.setX(shulkerLocation.getX()-1);
+        blockLocation.setX(blockLocation.getX()-1);
+
+        placeSlime(shulkerLocation,-2,0,-2);
+        addStair(blockLocation,-2,0,-2,Stairs.Shape.INNER_RIGHT,BlockFace.WEST, Bisected.Half.BOTTOM);
+
+        placeSlime(shulkerLocation,0,0,1);
+        addStair(blockLocation,0,0,1,Stairs.Shape.STRAIGHT,BlockFace.WEST, Bisected.Half.BOTTOM);
+
+        placeSlime(shulkerLocation,1,0,-1);
+        addStair(blockLocation,1,0,-1,Stairs.Shape.STRAIGHT,BlockFace.NORTH, Bisected.Half.BOTTOM);
+
+        //reset position
+        shulkerLocation.setZ(shulkerLocation.getZ()+2);
+        blockLocation.setZ(blockLocation.getZ()+2);
+        shulkerLocation.setX(shulkerLocation.getX()+1);
+        blockLocation.setX(blockLocation.getX()+1);
+
+        placeSlime(shulkerLocation,-2,0,2);
+        addStair(blockLocation,-2,0,2,Stairs.Shape.INNER_RIGHT,BlockFace.SOUTH, Bisected.Half.BOTTOM);
+
+        placeSlime(shulkerLocation,1,0,0);
+        addStair(blockLocation,1,0,0,Stairs.Shape.STRAIGHT,BlockFace.SOUTH, Bisected.Half.BOTTOM);
+
+        placeSlime(shulkerLocation,-1,0,-1);
+        addStair(blockLocation,-1,0,-1,Stairs.Shape.STRAIGHT,BlockFace.WEST, Bisected.Half.BOTTOM);
+
+        //reset position
+        shulkerLocation.setZ(shulkerLocation.getZ()-1);
+        blockLocation.setZ(blockLocation.getZ()-1);
+        shulkerLocation.setX(shulkerLocation.getX()+2);
+        blockLocation.setX(blockLocation.getX()+2);
+
+        //place stairs around center block
+        placeSlime(shulkerLocation,0,0,1);
+        addStair(blockLocation,0,0,1,Stairs.Shape.STRAIGHT,BlockFace.NORTH, Bisected.Half.BOTTOM);
+
+        placeSlime(shulkerLocation,0,0,-2);
+        addStair(blockLocation,0,0,-2,Stairs.Shape.STRAIGHT,BlockFace.SOUTH, Bisected.Half.BOTTOM);
+
+        placeSlime(shulkerLocation,1,0,1);
+        addStair(blockLocation,1,0,1,Stairs.Shape.STRAIGHT,BlockFace.WEST, Bisected.Half.BOTTOM);
+
+        placeSlime(shulkerLocation,-2,0,0);
+        addStair(blockLocation,-2,0,0,Stairs.Shape.STRAIGHT,BlockFace.EAST, Bisected.Half.BOTTOM);
 
 
 
