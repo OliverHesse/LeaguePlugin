@@ -6,6 +6,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class LeaguePlugin extends JavaPlugin {
     private static LeaguePlugin instance;
+    private LobbyManager LobbyManager;
     public Location TempStart;
     public LivingEntity TempEnd;
     @Override
@@ -18,6 +19,10 @@ public final class LeaguePlugin extends JavaPlugin {
         getCommand("setSpawn").setExecutor(new CommandSetSpawn(this));
         getCommand("spawnTower").setExecutor(new CommandSpawnTower(this));
 
+        GameManager currentGame = new GameManager();
+
+
+        currentGame.startGame();
 
     }
 
